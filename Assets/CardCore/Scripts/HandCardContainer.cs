@@ -7,11 +7,11 @@ using UnityEngine.Splines;
 
 namespace CardCore
 {
-    public class HandLayout : MonoBehaviour
+    public class HandCardContainer : CardContainer
     {
 
         [SerializeField]
-        private List<LayoutElementCard> cards;
+        private List<Card> cards;
         [SerializeField] private float cardSpacing;
         [SerializeField] private float moveDuration;
         [SerializeField] private SplineContainer splineContainer;
@@ -74,6 +74,12 @@ namespace CardCore
                 }
                 alpha += currentCardMargin;
 
+                if (cards[i].Dragged)
+                {
+                    alpha += currentCardMargin;
+                    continue;
+                }
+
                 Vector3 cardPosition;
                 float3 splinePosition;
                 float3 splineTangent;
@@ -106,7 +112,7 @@ namespace CardCore
             }
         }
 
-        public void InsertCard(int index, LayoutElementCard card)
+        public void InsertCard(int index, Card card)
         {
             cards.Insert(index, card);
             card.OnSelectedEvent.AddListener(UpdateChidrenTransforms);

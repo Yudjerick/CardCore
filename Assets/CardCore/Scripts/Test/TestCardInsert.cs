@@ -6,7 +6,7 @@ public class TestCardInsert : MonoBehaviour
     [SerializeField]
     private Transform cardToInsert;
     [SerializeField]
-    private HandLayout handLayout;
+    private HandCardContainer handLayout;
     void Start()
     {
         Invoke("Test", 3f);
@@ -14,7 +14,7 @@ public class TestCardInsert : MonoBehaviour
 
     private void Test()
     {
-        handLayout.InsertCard(0, cardToInsert.GetComponent<LayoutElementCard>());
+        handLayout.InsertCard(0, cardToInsert.GetComponent<Card>());
     }
 
     // Update is called once per frame
