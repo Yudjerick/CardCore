@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7786831843250828107}
   - component: {fileID: 5655807758659000968}
   - component: {fileID: 475725886465232765}
+  - component: {fileID: 1097577583650061139}
   m_Layer: 0
   m_Name: Card2D
   m_TagString: Untagged
@@ -132,6 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectOnHower: 1
+  draggable: 1
   OnInitEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -139,6 +141,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnDeselectedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBeginDragEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEndDragEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &475725886465232765
@@ -156,3 +164,15 @@ MonoBehaviour:
   firstCardOrderInLayer: 0
   orderInLayerStep: 1
   selectedOrderInLayer: 100
+--- !u!114 &1097577583650061139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011901562178899722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b5ffeee56d5f14694a6454c0fcde6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

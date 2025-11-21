@@ -1,7 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CardCore
 {
+    /// <summary>
+    /// Changes Order in Layer for cards that use Canvas so they 
+    /// are displayed correctly
+    /// </summary>
     [RequireComponent(typeof(Card))]
     [RequireComponent(typeof(Canvas))]
     public class OrderInLayerController : MonoBehaviour

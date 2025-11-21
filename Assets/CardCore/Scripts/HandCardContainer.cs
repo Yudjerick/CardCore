@@ -32,8 +32,7 @@ namespace CardCore
             OnUpdateCardsIndexes();
             for(int i = 0; i < cards.Count; i++) 
             {
-                cards[i].OnSelectedEvent.AddListener(UpdateChidrenTransforms);
-                cards[i].OnDeselectedEvent.AddListener(UpdateChidrenTransforms);
+                SetCardCallbacks(cards[i]);
             }
             UpdateChidrenTransforms();
         }
@@ -43,7 +42,7 @@ namespace CardCore
             float fixedCardSpacing = cardSpacing;
             float fixedSelectedCardSpacing = cardSpacing * selectedSpacingMultiplier;
             int selectedCardsCount = cards.Count(card => card.Selected);
-            float cardZoneLength = cards.Sum(card => card.Selected ? fixedSelectedCardSpacing : cardSpacing);
+            float cardZoneLength = cards.Sum(card => card.Dragged ? 0f : card.Selected ? fixedSelectedCardSpacing : cardSpacing); //Make desired spacing property in card?;
             if(cardZoneLength > 1f)
             {
                 cardZoneLength = 1f;
@@ -72,13 +71,14 @@ namespace CardCore
                     currentMoveDuration = moveDuration;
                     currentCardMargin = fixedCardSpacing / 2f;
                 }
-                alpha += currentCardMargin;
+                
 
                 if (cards[i].Dragged)
                 {
-                    alpha += currentCardMargin;
                     continue;
                 }
+
+                alpha += currentCardMargin;
 
                 Vector3 cardPosition;
                 float3 splinePosition;
@@ -112,11 +112,34 @@ namespace CardCore
             }
         }
 
+        private void DisableRecieveCardEvents()
+        {
+            foreach(var card in cards)
+            {
+                card.RecieveEvents = false;
+            }
+        }
+
+        private void EnableRecieveCardEvents()
+        {
+            foreach (var card in cards)
+            {
+                card.RecieveEvents = true;
+            }
+        }
+
+        private void SetCardCallbacks(Card card)
+        {
+            card.OnSelectedEvent.AddListener(UpdateChidrenTransforms);
+            card.OnDeselectedEvent.AddListener(UpdateChidrenTransforms);
+            card.OnBeginDragEvent.AddListener(DisableRecieveCardEvents);
+            card.OnEndDragEvent.AddListener(EnableRecieveCardEvents);
+        }
+
         public void InsertCard(int index, Card card)
         {
             cards.Insert(index, card);
-            card.OnSelectedEvent.AddListener(UpdateChidrenTransforms);
-            card.OnDeselectedEvent.AddListener(UpdateChidrenTransforms);
+            SetCardCallbacks(card);
             OnUpdateCardsIndexes();
             UpdateChidrenTransforms();
         }
