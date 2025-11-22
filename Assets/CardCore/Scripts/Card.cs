@@ -10,6 +10,8 @@ namespace CardCore
 {
     public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
+        private CardCoreManager _manager;
+
         [SerializeField] private bool selectOnHower;
         [SerializeField] private bool draggable;
         public bool Selected { get; private set; }
@@ -25,9 +27,19 @@ namespace CardCore
         public UnityEvent OnDeselectedEvent;
         public UnityEvent OnBeginDragEvent;
         public UnityEvent OnEndDragEvent;
+        public UnityEvent OnRemovedEvent;
 
         private Vector3 _dragOffset;
         private bool recieveEvents = true;
+
+        private void Start()
+        {
+            _manager = FindAnyObjectByType<CardCoreManager>();
+            if(_manager is null)
+            {
+                Debug.LogWarning("Couldn't find CardCoreManager");
+            }
+        }
 
         public void Init(int index)
         {
@@ -75,6 +87,7 @@ namespace CardCore
             //_dragOffset = transform.position - hit.point;
 
             OnBeginDragEvent?.Invoke();
+            _manager.DraggedCard = this;
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -84,6 +97,12 @@ namespace CardCore
                 return;
             Dragged = false;
             OnEndDragEvent?.Invoke();
+            _manager.DraggedCard = null;
+        }
+
+        public void Remove()
+        {
+            OnRemovedEvent?.Invoke();
         }
     }
 

@@ -26,6 +26,8 @@ namespace CardCore
             _layoutElementCard.OnInitEvent.AddListener(OnInit);
             _layoutElementCard.OnSelectedEvent.AddListener(OnSelected);
             _layoutElementCard.OnDeselectedEvent.AddListener(OnDeselected);
+            _layoutElementCard.OnBeginDragEvent.AddListener(OnSelected);
+            _layoutElementCard.OnEndDragEvent.AddListener(OnDeselected);
         }
         public void OnInit(int index)
         {
