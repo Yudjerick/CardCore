@@ -97,6 +97,11 @@ namespace CardCore
                 return;
             Dragged = false;
             OnEndDragEvent?.Invoke();
+            GameObject target = ExecuteEvents.GetEventHandler<IDropTarget>(eventData.pointerCurrentRaycast.gameObject);
+            if (target != null)
+            {
+                target.GetComponent<IDropTarget>().OnDrop(this);
+            }
             _manager.DraggedCard = null;
         }
 

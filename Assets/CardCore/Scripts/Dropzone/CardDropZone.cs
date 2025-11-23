@@ -6,26 +6,26 @@ using UnityEngine.Splines;
 
 namespace CardCore
 {
-    public class CardDropZone : MonoBehaviour, IDropHandler
+    public class CardDropZone : MonoBehaviour, IDropTarget
     {
         [SerializeField] SplineContainer spline;
         [SerializeField] HandCardContainer hand;
 
-        private CardCoreManager _manager;
+        //private CardCoreManager _manager;
 
         private void Start()
         {
-            _manager = FindAnyObjectByType<CardCoreManager>();
+            /*_manager = FindAnyObjectByType<CardCoreManager>();
             if (_manager is null)
             {
                 Debug.LogWarning("Couldn't find CardCoreManager");
-            }
+            }*/
         }
-        public void OnDrop(PointerEventData eventData)
+        public void OnDrop(Card card)
         {
-            _manager.DraggedCard.Remove();
+            card.Remove();
 
-            Vector3 localSplinePoint = spline.transform.InverseTransformPoint(_manager.DraggedCard.transform.position);
+            Vector3 localSplinePoint = spline.transform.InverseTransformPoint(card.transform.position);
             SplineUtility.GetNearestPoint(spline.Spline, localSplinePoint, out float3 _, out float t);
             int closestIndex = 0;
             while (t > hand.cardsSplineT[closestIndex])
@@ -38,7 +38,7 @@ namespace CardCore
             }
             
 
-            hand.InsertCard(closestIndex, _manager.DraggedCard);
+            hand.InsertCard(closestIndex, card);
 
 
             
