@@ -738,8 +738,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -369.64}
-  m_SizeDelta: {x: 1495.75, y: 275.22}
+  m_AnchoredPosition: {x: 0, y: -309.46}
+  m_SizeDelta: {x: 1495.75, y: 395.58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &596173596
 MonoBehaviour:
@@ -755,6 +755,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spline: {fileID: 871510443}
   hand: {fileID: 230377948}
+  howerHighlightEffectPrefab: {fileID: 1366244874076815005, guid: ea1920e148fec104a93d0affc0cbaa49, type: 3}
 --- !u!114 &596173597
 MonoBehaviour:
   m_ObjectHideFlags: 0

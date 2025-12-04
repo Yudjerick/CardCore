@@ -3,9 +3,13 @@ using UnityEngine.EventSystems;
 
 namespace CardCore
 {
-    public interface IDropTarget: IEventSystemHandler
+    public interface ICardDropTarget: IEventSystemHandler
     {
         void OnDrop(Card card);
+
+
+
+        bool CanAccept(Card card);
     }
 }
 

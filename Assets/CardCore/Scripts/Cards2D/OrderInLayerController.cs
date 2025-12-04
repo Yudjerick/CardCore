@@ -42,6 +42,10 @@ namespace CardCore
 
         public void OnDeselected()
         {
+            if (_layoutElementCard.Dragged)
+            {
+                return;
+            }
             _canvas.sortingOrder = _initialOrderInLayer;
         }
     }
