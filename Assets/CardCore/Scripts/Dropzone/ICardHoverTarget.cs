@@ -7,12 +7,12 @@ using UnityEngine.EventSystems;
 
 namespace CardCore
 {
-    public interface ICardHowerTarget : IEventSystemHandler
+    public interface ICardHoverTarget : IEventSystemHandler
     {
-        void OnHowerStart(Card card);
+        void OnHoverStart(Card card);
 
-        void OnHower(Card card);
+        void OnHover(Card card);
 
-        void OnHowerEnd(Card card);
+        void OnHoverEnd(Card card);
     }
 }

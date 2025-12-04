@@ -7,7 +7,7 @@ using UnityEngine.Splines;
 
 namespace CardCore
 {
-    public class CardDropZone : MonoBehaviour, ICardDropTarget, ICardHowerTarget
+    public class CardDropZone : MonoBehaviour, ICardDropTarget, ICardHoverTarget
     {
         [SerializeField] SplineContainer spline;
         [SerializeField] HandCardContainer hand;
@@ -27,7 +27,7 @@ namespace CardCore
         }
         public void OnDrop(Card card)
         {
-            if(card.IndexInContainer < _indexToInsert)
+            if(hand.cards.Contains(card) && card.IndexInContainer < _indexToInsert)
             {
                 _indexToInsert--;
             }
@@ -47,12 +47,12 @@ namespace CardCore
             
 
             hand.InsertCard(_indexToInsert, card);
-
+            _indexToInsert = -1;
 
             
         }
 
-        public void OnHowerStart(Card card)
+        public void OnHoverStart(Card card)
         {
             /*Vector3 localSplinePoint = spline.transform.InverseTransformPoint(card.transform.position);
             SplineUtility.GetNearestPoint(spline.Spline, localSplinePoint, out float3 _, out float t);
@@ -78,31 +78,36 @@ namespace CardCore
             return true;
         }
 
-        public void OnHowerEnd(Card card)
+        public void OnHoverEnd(Card card)
         {
             _howerEffectInstance?.Remove();
             Destroy(_howerEffectInstance?.gameObject);
             _howerEffectInstance = null;
         }
 
-        public void OnHower(Card card)
+        public void OnHover(Card card)
         {
-            Vector3 localSplinePoint = spline.transform.InverseTransformPoint(card.transform.position);
-            SplineUtility.GetNearestPoint(spline.Spline, localSplinePoint, out float3 _, out float t);
             int closestIndex = 0;
-            while (t > hand.cardsSplineT[closestIndex])
+            if (hand.cards.Count > 0)
             {
-                closestIndex++;
-                if (closestIndex == hand.cardsSplineT.Count)
+                Vector3 localSplinePoint = spline.transform.InverseTransformPoint(card.transform.position);
+                SplineUtility.GetNearestPoint(spline.Spline, localSplinePoint, out float3 _, out float t);
+
+                while (t > hand.cardsSplineT[closestIndex])
                 {
-                    break;
+                    closestIndex++;
+                    if (closestIndex == hand.cardsSplineT.Count)
+                    {
+                        break;
+                    }
+                }
+
+                if (_howerEffectInstance is not null && _howerEffectInstance.IndexInContainer < closestIndex)
+                {
+                    closestIndex--;
                 }
             }
-
-            if(closestIndex > card.IndexInContainer)
-            {
-                closestIndex--;
-            }
+            
 
             if(_indexToInsert == closestIndex)
             {
@@ -112,6 +117,7 @@ namespace CardCore
             _howerEffectInstance?.Remove();
             Destroy(_howerEffectInstance?.gameObject);
             _howerEffectInstance = Instantiate(howerHighlightEffectPrefab);
+            print(closestIndex);
             hand.InsertCard(closestIndex, _howerEffectInstance);
             _indexToInsert = closestIndex;
             _howerEffectInstance.transform.DOComplete(); //think about it later

@@ -23,6 +23,7 @@ namespace CardCore
         }
 
         public int IndexInContainer { get => _indexInContainer; set => _indexInContainer = value; }
+        public HandCardContainer container { get; private set; }
 
         public UnityEvent<int> OnInitEvent;
         public UnityEvent OnSelectedEvent;
@@ -33,8 +34,8 @@ namespace CardCore
 
         private Vector3 _dragOffset;
         private bool recieveEvents = true;
-        private GameObject _currentHowerTargetGameObject;
-        private ICardHowerTarget _currentHowerTarget;
+        private GameObject _currentHoverTargetGameObject;
+        private ICardHoverTarget _currentHoverTarget;
         private int _indexInContainer;
 
 
@@ -69,17 +70,17 @@ namespace CardCore
             if (!draggable)
                 return;
             transform.position = Camera.main.ScreenToWorldPoint(eventData.position) + _dragOffset;
-            GameObject targetGO = ExecuteEvents.GetEventHandler<ICardHowerTarget>(eventData.pointerCurrentRaycast.gameObject);
-            if (targetGO != _currentHowerTargetGameObject)
+            GameObject targetGO = ExecuteEvents.GetEventHandler<ICardHoverTarget>(eventData.pointerCurrentRaycast.gameObject);
+            if (targetGO != _currentHoverTargetGameObject)
             {
-                _currentHowerTargetGameObject?.GetComponent<ICardHowerTarget>()?.OnHowerEnd(this);
-                _currentHowerTargetGameObject = targetGO;
-                _currentHowerTarget = targetGO?.GetComponent<ICardHowerTarget>();
-                _currentHowerTarget?.OnHowerStart(this);
+                _currentHoverTargetGameObject?.GetComponent<ICardHoverTarget>()?.OnHoverEnd(this);
+                _currentHoverTargetGameObject = targetGO;
+                _currentHoverTarget = targetGO?.GetComponent<ICardHoverTarget>();
+                _currentHoverTarget?.OnHoverStart(this);
             }
             else
             {
-                _currentHowerTarget?.OnHower(this);
+                _currentHoverTarget?.OnHover(this);
             }
 
         }
@@ -103,7 +104,7 @@ namespace CardCore
                 return;
             Dragged = false;
             OnEndDragEvent?.Invoke();
-            _currentHowerTargetGameObject?.GetComponent<ICardHowerTarget>()?.OnHowerEnd(this);
+            _currentHoverTargetGameObject?.GetComponent<ICardHoverTarget>()?.OnHoverEnd(this);
             GameObject target = ExecuteEvents.GetEventHandler<ICardDropTarget>(eventData.pointerCurrentRaycast.gameObject);
             if (target != null)
             {
