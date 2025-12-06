@@ -31,6 +31,8 @@ namespace CardCore
         public UnityEvent OnBeginDragEvent;
         public UnityEvent OnEndDragEvent;
         public UnityEvent OnRemovedEvent;
+        public UnityEvent OnFocusStartEvent;
+        public UnityEvent OnFocusEndEvent;
 
         private Vector3 _dragOffset;
         private bool recieveEvents = true;
@@ -49,8 +51,10 @@ namespace CardCore
             if (selectOnHower)
             {
                 Selected = true;
-                OnSelectedEvent?.Invoke();
                 
+                OnSelectedEvent?.Invoke();
+                OnFocusStartEvent?.Invoke();
+
             }
         }
 
@@ -59,8 +63,13 @@ namespace CardCore
 
             if (selectOnHower)
             {
+                
                 Selected = false;
                 OnDeselectedEvent?.Invoke();
+                if (!Dragged)
+                {
+                    OnFocusEndEvent?.Invoke();
+                }
             }
         }
 
@@ -95,6 +104,11 @@ namespace CardCore
             _dragOffset = transform.position - Camera.main.ScreenToWorldPoint(eventData.position);
 
             OnBeginDragEvent?.Invoke();
+            if (!Selected)
+            {
+                OnFocusStartEvent?.Invoke();
+            }
+            
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -110,6 +124,9 @@ namespace CardCore
             {
                 target.GetComponent<ICardDropTarget>().OnDrop(this);
             }
+
+
+            OnFocusEndEvent?.Invoke();
         }
 
         public void Remove()

@@ -24,14 +24,16 @@ namespace CardCore
             _canvas = GetComponent<Canvas>();
             _layoutElementCard = GetComponent<Card>();
             _layoutElementCard.OnInitEvent.AddListener(OnInit);
-            _layoutElementCard.OnSelectedEvent.AddListener(OnSelected);
-            _layoutElementCard.OnDeselectedEvent.AddListener(OnDeselected);
-            _layoutElementCard.OnBeginDragEvent.AddListener(OnSelected);
-            _layoutElementCard.OnEndDragEvent.AddListener(OnDeselected);
+            _layoutElementCard.OnFocusStartEvent.AddListener(OnSelected);
+            _layoutElementCard.OnFocusEndEvent.AddListener(OnDeselected);
         }
         public void OnInit(int index)
         {
             _initialOrderInLayer = firstCardOrderInLayer + orderInLayerStep * index;
+            if(_layoutElementCard.Selected || _layoutElementCard.Dragged)
+            {
+                return;
+            }
             _canvas.sortingOrder = _initialOrderInLayer;
         }
 
@@ -42,10 +44,6 @@ namespace CardCore
 
         public void OnDeselected()
         {
-            if (_layoutElementCard.Dragged)
-            {
-                return;
-            }
             _canvas.sortingOrder = _initialOrderInLayer;
         }
     }

@@ -117,7 +117,6 @@ namespace CardCore
             _howerEffectInstance?.Remove();
             Destroy(_howerEffectInstance?.gameObject);
             _howerEffectInstance = Instantiate(howerHighlightEffectPrefab);
-            print(closestIndex);
             hand.InsertCard(closestIndex, _howerEffectInstance);
             _indexToInsert = closestIndex;
             _howerEffectInstance.transform.DOComplete(); //think about it later
