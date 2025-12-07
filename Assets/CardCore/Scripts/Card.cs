@@ -25,7 +25,7 @@ namespace CardCore
         public int IndexInContainer { get => _indexInContainer; set => _indexInContainer = value; }
         public HandCardContainer container { get; private set; }
 
-        public UnityEvent<int> OnInitEvent;
+        public UnityEvent<int> OnIndexUpdatedEvent;
         public UnityEvent OnSelectedEvent;
         public UnityEvent OnDeselectedEvent;
         public UnityEvent OnBeginDragEvent;
@@ -40,11 +40,30 @@ namespace CardCore
         private ICardHoverTarget _currentHoverTarget;
         private int _indexInContainer;
 
+        private void Start()
+        {
+            if(CardCoreManager.Singleton is null)
+            {
+                Debug.LogWarning("Failed to access CardCoreManager, CardCore may behave incorrecntly");
+                return;
+            }
+            CardCoreManager.Singleton.RegisterCard(this);
+        }
 
-        public void Init(int index)
+        private void OnDestroy()
+        {
+            if (CardCoreManager.Singleton is null)
+            {
+                Debug.LogWarning("Failed to access CardCoreManager, CardCore may behave incorrecntly");
+                return;
+            }
+            CardCoreManager.Singleton.UnregisterCard(this);
+        }
+
+        public void OnIndexUpdated(int index)
         {
             _indexInContainer = index;
-            OnInitEvent?.Invoke(index);
+            OnIndexUpdatedEvent?.Invoke(index);
         }
         public void OnPointerEnter(PointerEventData eventData)
         {
@@ -133,6 +152,8 @@ namespace CardCore
         {
             OnRemovedEvent?.Invoke();
         }
+
+        
     }
 
 }

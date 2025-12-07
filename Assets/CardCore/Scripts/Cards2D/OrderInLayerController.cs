@@ -23,7 +23,7 @@ namespace CardCore
         {
             _canvas = GetComponent<Canvas>();
             _layoutElementCard = GetComponent<Card>();
-            _layoutElementCard.OnInitEvent.AddListener(OnInit);
+            _layoutElementCard.OnIndexUpdatedEvent.AddListener(OnInit);
             _layoutElementCard.OnFocusStartEvent.AddListener(OnSelected);
             _layoutElementCard.OnFocusEndEvent.AddListener(OnDeselected);
         }

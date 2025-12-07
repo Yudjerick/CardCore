@@ -122,7 +122,7 @@ namespace CardCore
         {
             for(int i = 0; i < cards.Count; i++)
             {
-                cards[i].Init(i);
+                cards[i].OnIndexUpdated(i);
             }
         }
 
