@@ -27,6 +27,8 @@ namespace CardCore
         }
         public void OnDrop(Card card)
         {
+
+            _indexToInsert = CalculateClosestIndex(card);
             if(hand.cards.Contains(card) && card.IndexInContainer < _indexToInsert)
             {
                 _indexToInsert--;
@@ -87,6 +89,23 @@ namespace CardCore
 
         public void OnHover(Card card)
         {
+            int closestIndex = CalculateClosestIndex(card);
+
+            if(_indexToInsert == closestIndex)
+            {
+                return;
+            }
+
+            _howerEffectInstance?.Remove();
+            Destroy(_howerEffectInstance?.gameObject);
+            _howerEffectInstance = Instantiate(howerHighlightEffectPrefab);
+            hand.InsertCard(closestIndex, _howerEffectInstance);
+            _indexToInsert = closestIndex;
+            _howerEffectInstance.transform.DOComplete(); //think about it later
+        }
+
+        private int CalculateClosestIndex(Card card)
+        {
             int closestIndex = 0;
             if (hand.cards.Count > 0)
             {
@@ -107,19 +126,7 @@ namespace CardCore
                     closestIndex--;
                 }
             }
-            
-
-            if(_indexToInsert == closestIndex)
-            {
-                return;
-            }
-
-            _howerEffectInstance?.Remove();
-            Destroy(_howerEffectInstance?.gameObject);
-            _howerEffectInstance = Instantiate(howerHighlightEffectPrefab);
-            hand.InsertCard(closestIndex, _howerEffectInstance);
-            _indexToInsert = closestIndex;
-            _howerEffectInstance.transform.DOComplete(); //think about it later
+            return closestIndex;
         }
     }
 }

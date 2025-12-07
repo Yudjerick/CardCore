@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
@@ -154,7 +155,16 @@ namespace CardCore
 
         public void InsertCard(int index, Card card)
         {
-            cards.Insert(index, card);
+            //cards.Insert(index, card);
+            try
+            {
+                cards.Insert(index, card);
+            }
+            catch(Exception ex)
+            {
+                print(ex);
+                print("index:" + index);
+            }
             OnCardAdded(card);
             OnUpdateCardsIndexes();
             UpdateChidrenTransforms();
