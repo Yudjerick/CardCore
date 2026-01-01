@@ -11,8 +11,8 @@ namespace CardCore
     public class HandCardContainer : CardContainer
     {
 
-        [field: SerializeField]
-        public List<Card> cards { get; private set; }
+        //[field: SerializeField]
+        //public List<Card> cards { get; private set; }
         public List<float> cardsSplineT { get; private set; } = new List<float>();
         [SerializeField] private float cardSpacing;
         [SerializeField] private float moveDuration;
@@ -29,7 +29,7 @@ namespace CardCore
         [SerializeField] private SplineContainer selectedSplineContainer;
         [SerializeField] private float selectedMoveDuration;
 
-        private void Start()
+        /*private void Start()
         {
             OnUpdateCardsIndexes();
             for(int i = 0; i < cards.Count; i++) 
@@ -37,9 +37,9 @@ namespace CardCore
                 OnCardAdded(cards[i]);
             }
             UpdateChidrenTransforms();
-        }
+        }*/
 
-        private void UpdateChidrenTransforms()
+        protected override void UpdateChidrenTransforms()
         {
             RecalculateCardsT();
             for(int i = 0; i < cards.Count; i++)
@@ -119,58 +119,13 @@ namespace CardCore
             }
         }
 
-        private void OnUpdateCardsIndexes()
+        protected override void OnCardAdded(Card card)
         {
-            for(int i = 0; i < cards.Count; i++)
-            {
-                cards[i].OnIndexUpdated(i);
-            }
-        }
-
-        private void DisableRecieveCardEvents()
-        {
-            foreach(var card in cards)
-            {
-                card.RecieveEvents = false;
-            }
-        }
-
-        private void EnableRecieveCardEvents()
-        {
-            foreach (var card in cards)
-            {
-                card.RecieveEvents = true;
-            }
-        }
-
-        private void OnCardAdded(Card card)
-        {
-            card.OnSelectedEvent.AddListener(UpdateChidrenTransforms);
-            card.OnDeselectedEvent.AddListener(UpdateChidrenTransforms);
-            card.OnBeginDragEvent.AddListener(DisableRecieveCardEvents);
-            card.OnEndDragEvent.AddListener(EnableRecieveCardEvents);
-            card.OnRemovedEvent.AddListener (() => OnCardRemoved(card));
+            base.OnCardAdded(card);
             cardsSplineT.Add(0f);
         }
 
-        public void InsertCard(int index, Card card)
-        {
-            //cards.Insert(index, card);
-            try
-            {
-                cards.Insert(index, card);
-            }
-            catch(Exception ex)
-            {
-                print(ex);
-                print("index:" + index);
-            }
-            OnCardAdded(card);
-            OnUpdateCardsIndexes();
-            UpdateChidrenTransforms();
-        }
-
-        private void OnCardRemoved(Card card)
+        protected override void OnCardRemoved(Card card)
         {
             cards.Remove(card);
             card.OnSelectedEvent.RemoveListener(UpdateChidrenTransforms);
@@ -178,6 +133,7 @@ namespace CardCore
             card.OnBeginDragEvent.RemoveListener(DisableRecieveCardEvents);
             card.OnEndDragEvent.RemoveListener(EnableRecieveCardEvents);
             card.OnRemovedEvent.RemoveAllListeners();
+            
             cardsSplineT.RemoveAt(0);
             UpdateChidrenTransforms();
         }
