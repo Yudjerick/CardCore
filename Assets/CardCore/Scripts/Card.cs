@@ -8,14 +8,15 @@ using UnityEngine.UI;
 
 namespace CardCore
 {
-    public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
+    public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler,
+        IBeginDragHandler, IEndDragHandler
     {
 
-        [SerializeField] private bool selectOnHower;
+        [SerializeField] private bool selectOnHover;
         [SerializeField] private bool draggable;
         public bool Selected { get; private set; }
         public bool Dragged { get; private set; }
-        public bool RecieveEvents { get => recieveEvents; set
+        public bool RecieveEvents { get => _recieveEvents; set
             {
                 GetComponent<MaskableGraphic>().raycastTarget = value;
                 //recieveEvents = value;
@@ -35,7 +36,7 @@ namespace CardCore
         public UnityEvent OnFocusEndEvent;
 
         private Vector3 _dragOffset;
-        private bool recieveEvents = true;
+        private bool _recieveEvents = true;
         private GameObject _currentHoverTargetGameObject;
         private ICardHoverTarget _currentHoverTarget;
         private int _indexInContainer;
@@ -67,7 +68,7 @@ namespace CardCore
         }
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (selectOnHower)
+            if (selectOnHover)
             {
                 Selected = true;
                 
@@ -80,7 +81,7 @@ namespace CardCore
         public void OnPointerExit(PointerEventData eventData)
         {
 
-            if (selectOnHower)
+            if (selectOnHover)
             {
                 
                 Selected = false;

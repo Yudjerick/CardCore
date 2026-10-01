@@ -98,6 +98,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -132,9 +133,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63c4d57eb10ca7249820fb6bfeda66b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectOnHower: 1
+  selectOnHover: 1
   draggable: 1
-  OnInitEvent:
+  OnIndexUpdatedEvent:
     m_PersistentCalls:
       m_Calls: []
   OnSelectedEvent:
@@ -150,6 +151,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnRemovedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFocusStartEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFocusEndEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1097577583650061139
