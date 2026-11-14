@@ -51,6 +51,8 @@ namespace CardCore
 
         protected virtual void OnCardAdded(Card card)
         {
+            card.container = this;
+            card.OnAddedEvent?.Invoke();
             card.OnSelectedEvent.AddListener(UpdateChidrenTransforms);
             card.OnDeselectedEvent.AddListener(UpdateChidrenTransforms);
             card.OnBeginDragEvent.AddListener(DisableRecieveCardEvents);
@@ -64,6 +66,11 @@ namespace CardCore
             OnCardAdded(card);
             OnUpdateCardsIndexes();
             UpdateChidrenTransforms();
+        }
+
+        public void RemoveCard(Card card)
+        {
+            card.OnRemovedEvent?.Invoke();
         }
 
         protected virtual void OnCardRemoved(Card card)

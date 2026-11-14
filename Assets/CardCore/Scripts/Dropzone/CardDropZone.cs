@@ -11,9 +11,9 @@ namespace CardCore
     {
         [SerializeField] SplineContainer spline;
         [SerializeField] HandCardContainer hand;
-        [SerializeField] Card howerHighlightEffectPrefab;
+        [SerializeField] private Card hoverHighlightEffectPrefab;
 
-        private Card _howerEffectInstance;
+        private Card _hoverEffectInstance;
         private int _indexToInsert;
 
         public void OnDrop(Card card)
@@ -24,7 +24,7 @@ namespace CardCore
             {
                 _indexToInsert--;
             }
-            card.Remove();
+            card.container?.RemoveCard(card);
 
             hand.InsertCard(_indexToInsert, card);
             _indexToInsert = -1;
@@ -43,9 +43,9 @@ namespace CardCore
 
         public void OnHoverEnd(Card card)
         {
-            _howerEffectInstance?.Remove();
-            Destroy(_howerEffectInstance?.gameObject);
-            _howerEffectInstance = null;
+            _hoverEffectInstance?.container.RemoveCard(_hoverEffectInstance);
+            Destroy(_hoverEffectInstance?.gameObject);
+            _hoverEffectInstance = null;
         }
 
         public void OnHover(Card card)
@@ -57,12 +57,12 @@ namespace CardCore
                 return;
             }
 
-            _howerEffectInstance?.Remove();
-            Destroy(_howerEffectInstance?.gameObject);
-            _howerEffectInstance = Instantiate(howerHighlightEffectPrefab);
-            hand.InsertCard(closestIndex, _howerEffectInstance);
+            _hoverEffectInstance?.container.RemoveCard(_hoverEffectInstance);
+            Destroy(_hoverEffectInstance?.gameObject);
+            _hoverEffectInstance = Instantiate(hoverHighlightEffectPrefab);
+            hand.InsertCard(closestIndex, _hoverEffectInstance);
             _indexToInsert = closestIndex;
-            _howerEffectInstance.transform.DOComplete();
+            _hoverEffectInstance.transform.DOComplete();
         }
 
         private int CalculateClosestIndex(Card card)
@@ -82,7 +82,7 @@ namespace CardCore
                     }
                 }
 
-                if (_howerEffectInstance is not null && _howerEffectInstance.IndexInContainer < closestIndex)
+                if (_hoverEffectInstance is not null && _hoverEffectInstance.IndexInContainer < closestIndex)
                 {
                     closestIndex--;
                 }

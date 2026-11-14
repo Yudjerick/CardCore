@@ -24,13 +24,14 @@ namespace CardCore
         }
 
         public int IndexInContainer { get => _indexInContainer; set => _indexInContainer = value; }
-        public HandCardContainer container { get; private set; }
+        public CardContainer container { get; set; }
 
         public UnityEvent<int> OnIndexUpdatedEvent;
         public UnityEvent OnSelectedEvent;
         public UnityEvent OnDeselectedEvent;
         public UnityEvent OnBeginDragEvent;
         public UnityEvent OnEndDragEvent;
+        public UnityEvent OnAddedEvent;
         public UnityEvent OnRemovedEvent;
         public UnityEvent OnFocusStartEvent;
         public UnityEvent OnFocusEndEvent;
@@ -148,13 +149,6 @@ namespace CardCore
 
             OnFocusEndEvent?.Invoke();
         }
-
-        public void Remove()
-        {
-            OnRemovedEvent?.Invoke();
-        }
-
-        
     }
 
 }
